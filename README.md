@@ -15,7 +15,11 @@ Currently only the following is implemented (enough to implement pretty much all
 
 API tries to be as idiomatic as possible while preserving low-level control and avoiding doing too much "magic". One limitation is that structures are currently parsed using native endianness, see `utils`.
 
-Library is fully typed. Probably needs a fairly recent Python version. MIT license.
+- Fully typed, and it's strongly recommended to make use of the types (no validation is done to ensure passed values are of correct types, and weird behavior may occur if that's not the case)
+- Probably needs a fairly recent Python version
+- Zero-dependency
+- Multiplatform (except for obviously the efivarfs module)
+- MIT licensed
 
 ## Usage
 
@@ -29,7 +33,9 @@ from uefi_structs.stores.efivarfs import Efivarfs
 store = Efivarfs()
 ~~~
 
-Stores implement `variables.VariableStore`, which is pretty much just a dictionary from `VariableKey` to `Variable`. Variable keys are basically `(vendor_guid: UUID, name: str)` tuples, and variable contents are `(attrs: Attributes, data: bytes)`:
+Stores implement `variables.VariableStore`, which is pretty much just a dictionary from `VariableKey` to `Variable`. Because of this, we could also use a plain `dict` for an in-memory store (and e.g. serialize it once we're done working with it).
+
+Variable keys are basically `(vendor_guid: UUID, name: str)` tuples, and variable contents are `(attrs: Attributes, data: bytes)`:
 
 ~~~ python
 for key, var in store.items():
@@ -40,6 +46,7 @@ for key, var in store.items():
 VariableKey(vendor_guid=UUID('37d3e8e0-8858-4b84-a106-244bb8cbfdc3'), name='LenovoLogging') -> Variable(attributes=<Attributes.NON_VOLATILE|BOOTSERVICE_ACCESS|RUNTIME_ACCESS: 7>, data=b'\x00\x00\x00\x00\xd9\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
 VariableKey(vendor_guid=UUID('eb704011-1402-11d3-8e77-00a0c969723b'), name='MTC') -> Variable(attributes=<Attributes.NON_VOLATILE|BOOTSERVICE_ACCESS|RUNTIME_ACCESS: 7>, data=b'\xd3\x03\x00\x00')
 VariableKey(vendor_guid=UUID('8be4df61-93ca-11d2-aa0d-00e098032b8c'), name='ConIn') -> Variable(attributes=<Attributes.NON_VOLATILE|BOOTSERVICE_ACCESS|RUNTIME_ACCESS: 7>, data=b'\x02\x01\x0c\x00\xd0A\x03\n\x00\x00\x00\x00\x01\x01\x06\x00\x00\x1f\x02\x01\x0[...]')
+[...]
 ~~~
 
 As with any dictionary we can use `store[key]` to get or set a variable, `key in store` to check for existence of a variable, and `del store[key]` to delete a variable from the store.
@@ -81,7 +88,7 @@ bm_store = StoreView(store)
 print('BootOrder:', bm_store.BootOrder)
 ~~~
 
-As you can see, the class exposes attributes for every known variable, and accessing those returns an `(attrs, data)` tuple like before, but with `data` being parsed into the appropriate object. Like in the dict-like objects, we could use `del bm_store.BootOrder` to delete the variable from the underlying store. If the variable doesn't exist, fetching the attribute raises `KeyError`.
+As you can see the class exposes attributes of an appropriate type for every known variable. If the variable doesn't exist, fetching the attribute raises `KeyError`. Like in the dict-like objects, we can use `del bm_store.BootOrder` to delete the variable from the underlying store.
 
 For sets of variables with a hexadecimal suffix, like `Boot####`, there's an attribute named after the prefix (`Boot`) exposing a dictionary with `int` keys:
 
