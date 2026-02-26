@@ -126,4 +126,6 @@ Note that if no parser is registered for the node's type/subtype, `ValueError` w
 
 ### Further resources
 
-Although I've tried to write basic docstrings for everything, that's currently all documentation there is. For a decently complete example you can look at `dump_boot.py` which implements the same functionality as efibootmgr when run without arguments.
+Although I've tried to write basic docstrings for everything, that's currently all documentation there is. For a decently complete example you can look at `dump_boot.py` which implements the same functionality as efibootmgr when run without arguments:
+
+<img width="1241" height="1098" alt="Terminal screenshot: it shows BootCurrent, BootNext, BootOrder and the defined BootOptions. Output is colorized and hexdumps are shown for the optional data section of boot options, if present" src="https://github.com/user-attachments/assets/93d92928-8909-4a78-88af-88ef2845ba8d" />
