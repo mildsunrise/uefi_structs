@@ -10,7 +10,7 @@ from uefi_structs.utils import extract_mask
 colorize = sys.stdout.buffer.isatty()
 bytes_per_line = 24
 
-def pad_iter[T](iterable: Iterable[T], size: int, default: T=None) -> Iterable[Optional[T]]:
+def pad_iter[T](iterable: Iterable[T], size: int, default: T=None) -> Iterable[T]:
 	iterator = iter(iterable)
 	for _ in range(size):
 		yield next(iterator, default)

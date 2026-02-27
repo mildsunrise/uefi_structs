@@ -1,0 +1,15 @@
+name: Test and lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jakebailey/pyright-action@v2
+        with:
+          version: 1.1.363
+          python-version: '3.12'
