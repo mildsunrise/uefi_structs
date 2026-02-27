@@ -1,7 +1,7 @@
 # uefi_structs
 
 A pure Python library for low-level encoding / decoding of UEFI global variables and related structures.
-Looks like nobody else has written this other than `efibootmgr` (see its [C library](https://github.com/rhboot/efivar)) so here it goes.
+Looks like nobody else has written this other than [`efibootmgr`](https://github.com/rhboot/efibootmgr) (and its [C library](https://github.com/rhboot/efivar)), but even that only implements a very specific, even if common, subset of boot options. Other load options are parsed but AFAIK manipulation of those is not implemented.
 
 Currently only the following is implemented (enough to implement pretty much all functionality that `efibootmgr` has to offer):
 
@@ -13,13 +13,15 @@ Currently only the following is implemented (enough to implement pretty much all
 
  - **stores.efivarfs**: variable store backend for [efivarfs](https://docs.kernel.org/filesystems/efivarfs.html) on Linux systems
 
-API tries to be as idiomatic as possible while preserving low-level control and avoiding doing too much "magic". One limitation is that structures are currently parsed using native endianness, see `utils`.
+API tries to be as idiomatic as possible while preserving low-level control and avoiding doing too much "magic". It also tries to be composable. One limitation is that structures are currently parsed using native endianness, see `utils`.
 
-- Fully typed, and it's strongly recommended to make use of the types (no validation is done to ensure passed values are of correct types, and weird behavior may occur if that's not the case)
-- Probably needs a fairly recent Python version
+- Fully typed
+- Needs Python 3.12+
 - Zero-dependency
 - Multiplatform (except for obviously the efivarfs module)
 - MIT licensed
+
+It's strongly recommended to make use of the types (no validation is done to ensure passed values are of correct types, and weird behavior may occur if that's not the case).
 
 ## Usage
 
