@@ -1,0 +1,19 @@
+[project]
+name = "uefi_structs"
+version = "1.0.0"
+authors = [
+  { name="Alba Mendez", email="me@alba.sh" },
+]
+description = "Python library for UEFI variable manipulation"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/mildsunrise/uefi_structs"
+Issues = "https://github.com/mildsunrise/uefi_structs/issues"
